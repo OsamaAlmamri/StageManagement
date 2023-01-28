@@ -1,6 +1,5 @@
-import 'dart:html';
-
 import 'package:chat_firebase/cubit/LoginState/login_cubit_cubit.dart';
+import 'package:chat_firebase/cubit/LoginState/login_cubit_state.dart';
 import 'package:chat_firebase/pages/chat_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -19,22 +18,34 @@ class LoginPage extends StatelessWidget {
 
   String? email, password;
 
+  LoginPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return BlocListener<LoginCubitCubit, LoginCubitState>(
       listener: (context, state) {
-        if (state == LoginCubitLoading)
+        if (state is LoginCubitLoading)
           isLoading = true;
-        else if (state == LoginCubitSuccess)
+        else if (state is LoginCubitSuccess)
           Navigator.pushNamed(context, ChatPage.id);
-        else if (state == LoginCubitFailure)
+        else if (state is LoginCubitFailure) {
+          isLoading = false;
+          print(state.err_message);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text('there is problem'),
+              content: Text(state.err_message!),
+            ),
+          );
+        }
+        else
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: Text("state.err_message!"),
             ),
           );
       },
       child: ModalProgressHUD(
+        inAsyncCall: isLoading,
         child: Scaffold(
           backgroundColor: kPrimaryColor,
           body: Padding(
@@ -43,7 +54,7 @@ class LoginPage extends StatelessWidget {
               key: formKey,
               child: ListView(
                 children: [
-                  SizedBox(
+                  const SizedBox(
                     height: 75,
                   ),
                   Image.asset(
@@ -102,36 +113,8 @@ class LoginPage extends StatelessWidget {
                   CustomButon(
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-                        isLoading = true;
-
-                        try {
-                          await loginUser();
-                          Navigator.pushNamed(context, ChatPage.id,
-                              arguments: email);
-                        } on FirebaseAuthException catch (ex) {
-                          if (ex.code == 'user-not-found') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('user not found'),
-                              ),
-                            );
-                          } else if (ex.code == 'wrong-password') {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text('wrong password'),
-                              ),
-                            );
-                          }
-                        } catch (ex) {
-                          print(ex);
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text('there was an error'),
-                            ),
-                          );
-                        }
-
-                        isLoading = false;
+                        BlocProvider.of<LoginCubitCubit>(context)
+                            .loginUser(email: email!, password: password!);
                       } else {}
                     },
                     text: 'LOGIN',
@@ -166,13 +149,8 @@ class LoginPage extends StatelessWidget {
             ),
           ),
         ),
-        inAsyncCall: isLoading,
       ),
     );
   }
 
-  Future<void> loginUser() async {
-    UserCredential user = await FirebaseAuth.instance
-        .signInWithEmailAndPassword(email: email!, password: password!);
-  }
 }
