@@ -52,7 +52,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '$teamAPoints',
+                            '${ BlocProvider.of<CounterCubit>(context).teamAPoints}',
                             style: TextStyle(
                               fontSize: 150,
                             ),
@@ -64,10 +64,8 @@ class HomePage extends StatelessWidget {
                               minimumSize: Size(150, 50),
                             ),
                             onPressed: () {
-                              setState(() {
-                                teamAPoints++;
-                              });
-                              print(teamAPoints);
+
+                              BlocProvider.of<CounterCubit>(context).teamPIncrement(team: "A",points: 1);
                             },
                             child: Text(
                               'Add 1 Point ',
@@ -83,9 +81,7 @@ class HomePage extends StatelessWidget {
                               minimumSize: Size(150, 50),
                             ),
                             onPressed: () {
-                              setState(() {
-                                teamAPoints += 2;
-                              });
+                              BlocProvider.of<CounterCubit>(context).teamPIncrement(team: "A",points: 2);
                             },
                             child: Text(
                               'Add 2 Point',
@@ -101,9 +97,7 @@ class HomePage extends StatelessWidget {
                               minimumSize: Size(150, 50),
                             ),
                             onPressed: () {
-                              setState(() {
-                                teamAPoints += 3;
-                              });
+                              BlocProvider.of<CounterCubit>(context).teamPIncrement(team: "A",points: 3);
                             },
                             child: Text(
                               'Add 3 Point ',
@@ -137,7 +131,7 @@ class HomePage extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            '$teamBPoints',
+                            '${ BlocProvider.of<CounterCubit>(context).teamBPoints}',
                             style: TextStyle(
                               fontSize: 150,
                             ),
@@ -149,8 +143,7 @@ class HomePage extends StatelessWidget {
                               minimumSize: Size(150, 50),
                             ),
                             onPressed: () {
-                              setState(() {});
-                              teamBPoints++;
+                              BlocProvider.of<CounterCubit>(context).teamPIncrement(team: "B",points: 1);
                             },
                             child: Text(
                               'Add 1 Point ',
@@ -166,8 +159,7 @@ class HomePage extends StatelessWidget {
                               minimumSize: Size(150, 50),
                             ),
                             onPressed: () {
-                              setState(() {});
-                              teamBPoints += 2;
+                              BlocProvider.of<CounterCubit>(context).teamPIncrement(team: "B",points: 2);
                             },
                             child: Text(
                               'Add 2 Point ',
@@ -183,9 +175,7 @@ class HomePage extends StatelessWidget {
                               minimumSize: Size(150, 50),
                             ),
                             onPressed: () {
-                              setState(() {
-                                teamBPoints += 3;
-                              });
+                              BlocProvider.of<CounterCubit>(context).teamPIncrement(team: "B",points: 3);
                             },
                             child: Text(
                               'Add 3 Point ',
@@ -207,10 +197,8 @@ class HomePage extends StatelessWidget {
                     minimumSize: Size(150, 50),
                   ),
                   onPressed: () {
-                    setState(() {
-                      teamAPoints = 0;
-                      teamBPoints = 0;
-                    });
+
+                    BlocProvider.of<CounterCubit>(context).reset();
                   },
                   child: Text(
                     'Reset',
@@ -222,18 +210,18 @@ class HomePage extends StatelessWidget {
                 ),
               ],
             ),
-          )
+          );
         },
         listener: (context, state) {
           if (state is CounterAIncrementState) {
-            teamAPoints = BlocProvider
-                .of<CounterCubit>(context)
-                .teamAPoints;
+            // teamAPoints = BlocProvider
+            //     .of<CounterCubit>(context)
+            //     .teamAPoints;
           }
           else {
-            teamBPoints = BlocProvider
-                .of<CounterCubit>(context)
-                .teamBPoints;
+            // teamBPoints = BlocProvider
+            //     .of<CounterCubit>(context)
+            //     .teamBPoints;
           }
         });
   }
