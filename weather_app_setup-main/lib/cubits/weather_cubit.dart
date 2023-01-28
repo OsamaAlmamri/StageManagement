@@ -4,11 +4,13 @@ import 'package:weather_app/models/weather_model.dart';
 import 'package:weather_app/services/weather_service.dart';
 
 class WeatherCubit extends Cubit<WeatherState> {
-  WeatherCubit(this.weatherService) : super(WeatherStateLoading());
+  WeatherCubit(this.weatherService) : super(WeatherStateInitial());
   WeatherService weatherService;
 late  WeatherModel weatherModel ;
+late  String city_name ;
 
   Future<void> getWeather({required String citeName}) async {
+    city_name=citeName;
     emit(WeatherStateLoading());
 
     try {
