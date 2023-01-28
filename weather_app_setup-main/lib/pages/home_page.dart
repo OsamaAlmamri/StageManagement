@@ -37,8 +37,7 @@ class HomePage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             else if (state is WeatherStateSuccess) {
-              weatherData = Provider.of<WeatherCubit>(context).weatherModel;
-              return SuccessBody(weatherData: weatherData!);
+              return SuccessBody(weatherData:state.weatherModel! );
             } else
               return Center(
                 child: Text("there is wroing "),
