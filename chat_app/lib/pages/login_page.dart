@@ -1,21 +1,17 @@
-import 'dart:ffi';
-import 'dart:math';
-
+import 'package:chat_firebase/pages/chat_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:chat_firebase/constants.dart';
+import 'package:chat_firebase/widgets/custom_text_field.dart';
+import 'package:chat_firebase/widgets/custom_button.dart';
+import 'package:chat_firebase/pages/resgister_page.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:scholar_chat/constants.dart';
-import 'package:scholar_chat/helper/show_snack_bar.dart';
-import 'package:scholar_chat/pages/resgister_page.dart';
-import 'package:scholar_chat/widgets/custom_button.dart';
-import 'package:scholar_chat/widgets/custom_text_field.dart';
-
-import 'chat_page.dart';
 
 class LoginPage extends StatefulWidget {
   LoginPage({Key? key}) : super(key: key);
 
   static String id = 'login page';
+
   @override
   State<LoginPage> createState() => _LoginPageState();
 }
@@ -26,10 +22,10 @@ class _LoginPageState extends State<LoginPage> {
   GlobalKey<FormState> formKey = GlobalKey();
 
   String? email, password;
+
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
-      inAsyncCall: isLoading,
       child: Scaffold(
         backgroundColor: kPrimaryColor,
         body: Padding(
@@ -105,13 +101,25 @@ class _LoginPageState extends State<LoginPage> {
                             arguments: email);
                       } on FirebaseAuthException catch (ex) {
                         if (ex.code == 'user-not-found') {
-                          showSnackBar(context, 'user not found');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('user not found'),
+                            ),
+                          );
                         } else if (ex.code == 'wrong-password') {
-                          showSnackBar(context, 'wrong password');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('wrong password'),
+                            ),
+                          );
                         }
                       } catch (ex) {
                         print(ex);
-                        showSnackBar(context, 'there was an error');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('there was an error'),
+                          ),
+                        );
                       }
 
                       isLoading = false;
@@ -150,6 +158,7 @@ class _LoginPageState extends State<LoginPage> {
           ),
         ),
       ),
+      inAsyncCall: isLoading,
     );
   }
 

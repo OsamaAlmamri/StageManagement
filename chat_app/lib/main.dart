@@ -1,9 +1,8 @@
+import 'package:chat_firebase/pages/chat_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:scholar_chat/pages/chat_page.dart';
-import 'package:scholar_chat/pages/login_page.dart';
-import 'package:scholar_chat/pages/resgister_page.dart';
-
+import 'package:chat_firebase/pages/login_page.dart';
+import 'package:chat_firebase/pages/resgister_page.dart';
 import 'firebase_options.dart';
 
 void main() async  {
@@ -23,7 +22,7 @@ class ScholarChat extends StatelessWidget {
       routes: {
        LoginPage.id: (context) => LoginPage(),
         RegisterPage.id: (context) => RegisterPage(),
-        ChatPage.id : (context) => ChatPage()
+        ChatPage.id: (context) => ChatPage(),
       },
       initialRoute: LoginPage.id,
     );

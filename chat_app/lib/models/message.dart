@@ -1,4 +1,4 @@
-import 'package:scholar_chat/constants.dart';
+import 'package:chat_firebase/constants.dart';
 
 class Message {
   final String message;

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:scholar_chat/models/message.dart';
+import 'package:chat_firebase/models/message.dart';
 
 import '../constants.dart';
 
@@ -12,7 +12,8 @@ class ChatBuble extends StatelessWidget {
   final Message message;
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return
+      Align(
       alignment: Alignment.centerLeft,
       child: Container(
         padding: EdgeInsets.only(left: 16, top: 32, bottom: 32, right: 32),
@@ -45,7 +46,8 @@ class ChatBubleForFriend extends StatelessWidget {
   final Message message;
   @override
   Widget build(BuildContext context) {
-    return Align(
+    return
+      Align(
       alignment: Alignment.centerRight,
       child: Container(
         padding: EdgeInsets.only(left: 16, top: 32, bottom: 32, right: 32),

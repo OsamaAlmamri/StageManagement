@@ -1,11 +1,13 @@
+import 'package:chat_firebase/pages/chat_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+
+import 'package:chat_firebase/constants.dart';
+
+import 'package:chat_firebase/widgets/custom_button.dart';
+import 'package:chat_firebase/widgets/custom_text_field.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
-import 'package:scholar_chat/constants.dart';
-import 'package:scholar_chat/helper/show_snack_bar.dart';
-import 'package:scholar_chat/pages/chat_page.dart';
-import 'package:scholar_chat/widgets/custom_button.dart';
-import 'package:scholar_chat/widgets/custom_text_field.dart';
 
 class RegisterPage extends StatefulWidget {
   RegisterPage({Key? key}) : super(key: key);
@@ -20,6 +22,7 @@ class _RegisterPageState extends State<RegisterPage> {
   String? email;
 
   String? password;
+  String? displayName;
 
   bool isLoading = false;
 
@@ -28,7 +31,6 @@ class _RegisterPageState extends State<RegisterPage> {
   @override
   Widget build(BuildContext context) {
     return ModalProgressHUD(
-      inAsyncCall: isLoading,
       child: Scaffold(
         backgroundColor: kPrimaryColor,
         body: Padding(
@@ -76,6 +78,18 @@ class _RegisterPageState extends State<RegisterPage> {
                 ),
                 CustomFormTextField(
                   onChanged: (data) {
+                    displayName = data;
+                  },
+                  hintText: 'displayName',
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                CustomFormTextField(
+                  onChanged: (data) {
                     email = data;
                   },
                   hintText: 'Email',
@@ -100,15 +114,28 @@ class _RegisterPageState extends State<RegisterPage> {
                       try {
                         await registerUser();
 
-                        Navigator.pushNamed(context, ChatPage.id);
+                       Navigator.pushNamed(context, ChatPage.id);
                       } on FirebaseAuthException catch (ex) {
                         if (ex.code == 'weak-password') {
-                          showSnackBar(context, 'weak password');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('weak password'),
+                            ),
+                          );
+
                         } else if (ex.code == 'email-already-in-use') {
-                          showSnackBar(context, 'email already exists');
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('email already exists'),
+                            ),
+                          );
                         }
                       } catch (ex) {
-                        showSnackBar(context, 'there was an error');
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('there was an error'),
+                          ),
+                        );
                       }
 
                       isLoading = false;
@@ -147,11 +174,17 @@ class _RegisterPageState extends State<RegisterPage> {
           ),
         ),
       ),
+      inAsyncCall: isLoading,
     );
   }
 
   Future<void> registerUser() async {
     UserCredential user = await FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email!, password: password!);
+
+    print(user);
   }
 }
+
+
+
