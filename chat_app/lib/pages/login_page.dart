@@ -1,3 +1,4 @@
+import 'package:chat_firebase/cubit/ChatState/chat_cubit.dart';
 import 'package:chat_firebase/cubit/LoginState/login_cubit_cubit.dart';
 import 'package:chat_firebase/cubit/LoginState/login_cubit_state.dart';
 import 'package:chat_firebase/pages/chat_page.dart';
@@ -26,9 +27,10 @@ class LoginPage extends StatelessWidget {
       listener: (context, state) {
         if (state is LoginCubitLoading)
           isLoading = true;
-        else if (state is LoginCubitSuccess)
+        else if (state is LoginCubitSuccess) {
+          BlocProvider.of<ChatCubitCubit>(context).getMessages();
           Navigator.pushNamed(context, ChatPage.id);
-        else if (state is LoginCubitFailure) {
+        } else if (state is LoginCubitFailure) {
           isLoading = false;
           print(state.err_message);
           ScaffoldMessenger.of(context).showSnackBar(
