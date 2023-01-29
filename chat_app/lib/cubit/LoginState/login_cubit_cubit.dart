@@ -29,4 +29,12 @@ class LoginCubitCubit extends Cubit<LoginCubitState> {
 
     }
   }
+
+
+  @override
+  void onChange(Change<LoginCubitState> change) {
+    // TODO: implement onChange
+    super.onChange(change);
+    print(change);  
+  }
 }
