@@ -1,6 +1,7 @@
+import 'package:chat_firebase/block/auth_bloc/auth_bloc.dart';
+import 'package:chat_firebase/block/auth_bloc/auth_event.dart';
+import 'package:chat_firebase/block/auth_bloc/auth_state.dart';
 import 'package:chat_firebase/cubit/ChatState/chat_cubit.dart';
-import 'package:chat_firebase/cubit/LoginState/login_cubit_cubit.dart';
-import 'package:chat_firebase/cubit/LoginState/login_cubit_state.dart';
 import 'package:chat_firebase/pages/chat_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -23,7 +24,7 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<LoginCubitCubit, LoginCubitState>(
+    return BlocListener<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state is LoginCubitLoading)
           isLoading = true;
@@ -115,8 +116,7 @@ class LoginPage extends StatelessWidget {
                   CustomButon(
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-                        BlocProvider.of<LoginCubitCubit>(context)
-                            .loginUser(email: email!, password: password!);
+                        BlocProvider.of<AuthBloc>(context).add(LoginEvent(email: email!, password: password!));
                       } else {}
                     },
                     text: 'LOGIN',

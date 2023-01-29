@@ -1,5 +1,7 @@
-import 'package:chat_firebase/cubit/RegisterState/register_cubit.dart';
-import 'package:chat_firebase/cubit/RegisterState/register_state.dart';
+
+import 'package:chat_firebase/block/auth_bloc/auth_bloc.dart';
+import 'package:chat_firebase/block/auth_bloc/auth_event.dart';
+import 'package:chat_firebase/block/auth_bloc/auth_state.dart';
 import 'package:chat_firebase/pages/chat_page.dart';
 import 'package:flutter/material.dart';
 import 'package:chat_firebase/constants.dart';
@@ -18,7 +20,7 @@ class RegisterPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<RegisterCubitCubit, RegisterCubitState>(
+    return BlocConsumer<AuthBloc, AuthState>(
         builder: (context, state) {
       return ModalProgressHUD(
         child: Scaffold(
@@ -99,8 +101,8 @@ class RegisterPage extends StatelessWidget {
                   CustomButon(
                     onTap: () async {
                       if (formKey.currentState!.validate()) {
-                        BlocProvider.of<RegisterCubitCubit>(context)
-                            .RegisterUser(email: email!, password: password!);
+                        BlocProvider.of<AuthBloc>(context).add(
+                            RegisterEvent(email: email!, password: password!));
                       } else {}
                     },
                     text: 'REGISTER',
