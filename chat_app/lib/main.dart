@@ -4,8 +4,8 @@ import 'package:chat_firebase/cubit/RegisterState/register_cubit.dart';
 import 'package:chat_firebase/pages/chat_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:chat_firebase/pages/login_page.dart';
-import 'package:chat_firebase/pages/resgister_page.dart';
+import 'package:chat_firebase/pages/login2_page.dart';
+import 'package:chat_firebase/pages/resgister2_page.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'firebase_options.dart';
 
